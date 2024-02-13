@@ -1,0 +1,26 @@
+## plot raw data of all five light conditions P1-P5 together to compare: 
+
+```{r}
+par(mfrow=c(2,3))
+merge.data1 <- read.irradiance(File="P1")
+merge.data2 <- read.irradiance(File="P2")
+merge.data3 <- read.irradiance(File="P3")
+merge.data4 <- read.irradiance(File="P4")
+merge.data5 <- read.irradiance(File="P5")
+```
+
+## plot smoothed data of all five light conditions P1-P5 together to compare: 
+
+```{r}
+par(mfrow=c(2,3))
+merge.data1 <- read.irradiance.smooth(File="P1")
+#for P1, the integration time is always 2000ms
+merge.data2 <- read.irradiance.smooth(File="P2")
+#for P2, the integration time is always 2000ms
+merge.data3 <- read.irradiance.smooth(File="P3")
+#for P3, the integration time is 2000ms except the white reference, which is 1000ms
+merge.data4 <- read.irradiance.smooth(File="P4")
+#for P4, the integration time is 2000ms except the white reference, which is 1000ms
+merge.data5 <- read.irradiance.smooth(File="P5")
+#for P5, the integration time is 300ms at first, then 1000ms, the white reference is 90ms
+```

@@ -1,0 +1,68 @@
+## plot reflectance
+
+```{r}
+P1 <- calculate.reflectance(Data=merge.data1)
+P2 <- calculate.reflectance(Data=merge.data2)
+P3 <- calculate.reflectance(Data=merge.data3)
+P4 <- calculate.reflectance(Data=merge.data4)
+P5 <- calculate.reflectance(Data=merge.data5)
+reflectanceP1 <- P1[1]
+reflectanceP2 <- P2[1]
+reflectanceP3 <- P3[1]
+reflectanceP4 <- P4[1]
+reflectanceP5 <- P5[1]
+logreflectanceP1 <- P1[2]
+logreflectanceP2 <- P2[2]
+logreflectanceP3 <- P3[2]
+logreflectanceP4 <- P4[2]
+logreflectanceP5 <- P5[2]
+```
+
+## plot the first(shallowest) reflectance spectrum of P1-P5 to compare
+
+```{r}
+reflectance <- data.frame(reflectanceP1[[1]][1], reflectanceP1[[1]][2], reflectanceP2[[1]][2], reflectanceP3[[1]][2], reflectanceP4[[1]][2], reflectanceP5[[1]][2])
+matplot(reflectance[1], reflectance[,-1], type="l", xlab = "wavelength", ylab = "reflectance", col=c(1:6))
+legend("top", legend = c("P1", "P2", "P3", "P4", "P5"),lty=c(1,2,3,4,5), col=c(1:6))
+matplot(reflectance[1], reflectance[,-1], type="l", xlim=c(400, 800), xlab = "wavelength", ylab = "reflectance", col=c(1:6))
+legend("top", legend = c("P1", "P2", "P3", "P4", "P5"),lty=c(1,2,3,4,5), col=c(1:6))
+ref_mean <- colMeans(reflectance[which(reflectance[1]>550 & reflectance[1]<660),])
+#to calculate mean value of reflectance from 550 to 660 nm wavelength
+```
+
+## to plot the ratio of white reference of P1-P5
+
+```{r}
+calculate.wref <- function(Data)
+{
+  wref <- rowMeans(Data[(length(Data)-9):length(Data)])
+  return(wref)
+}
+wref1 <- calculate.wref(merge.data1)
+wref2 <- calculate.wref(merge.data2)
+wref3 <- calculate.wref(merge.data3)
+wref4 <- calculate.wref(merge.data4)
+wref5 <- calculate.wref(merge.data5)
+wrefratio <- data.frame(reflectance[1], wref1/wref5, wref2/wref5, wref3/wref5, wref4/wref5, wref5/wref5)
+for (i in 2:5) {
+  wrefratio[i] <- pmax(0, wrefratio[i])
+  wrefratio[i] <- pmin(1, wrefratio[i])
+}
+matplot(wrefratio[1], wrefratio[,-1], type="l", xlab = "wavelength", ylab = "wrefratio", col=c(1:5))
+legend("top", legend = c("P1/P5", "P2/P5", "P3/P5", "P4/P5", "P5/P5"),lty=c(1:5), col=c(1:5))
+
+matplot(wrefratio[1], wrefratio[,-1], type="l", xlim=c(400, 800), xlab = "wavelength", ylab = "wrefratio", col=c(1:5))
+legend("top", legend = c("P1/P5", "P2/P5", "P3/P5", "P4/P5", "P5/P5"),lty=c(1:5), col=c(1:5))
+wref_mean <- colMeans(wrefratio[which(wrefratio[1]>550 & wrefratio[1]<660),])
+#to calculate mean value of white reference from 550 to 660 nm wavelength
+```
+
+## plot ref_mean, wref_mean and licor reading together to compare
+
+```{r}
+licor <- c(13.80, 60.25, 158.70, 475.10, 2428)
+scale <- data.frame(ref_mean[2:6]/max(ref_mean[2:6]), wref_mean[2:6], licor/max(licor))
+matplot(x=1:5, y=scale, type = "l", xlab = "light intensity", ylab = "percentage", 
+        col = c(1:3))
+legend("top", legend = c("reflectance", "white reference", "licor"), lty=c(1,2,3), col=c(1:3))
+```

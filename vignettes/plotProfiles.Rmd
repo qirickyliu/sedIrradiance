@@ -1,0 +1,65 @@
+## plot profiles of P1-P5
+
+```{r}
+alldepth <- read.table("depth.txt", fill=TRUE, skip=1, sep=",")
+depth_P1 <- unlist(alldepth[1,-1], use.names = F)
+depth_P2 <- unlist(alldepth[2,-1], use.names = F)
+depth_P3 <- unlist(alldepth[3,-1], use.names = F)
+depth_P4 <- unlist(alldepth[4,-1], use.names = F)
+depth_P5 <- unlist(alldepth[5,-1], use.names = F)
+depth_P1 <- depth_P1[!is.na(depth_P1)]
+depth_P2 <- depth_P2[!is.na(depth_P2)]
+depth_P3 <- depth_P3[!is.na(depth_P3)]
+depth_P4 <- depth_P4[!is.na(depth_P4)]
+depth_P5 <- depth_P5[!is.na(depth_P5)]
+#read depth profile from txt file
+irradiance_P1 <- plot.profile(imax = ncol(merge.data1)-19, data = merge.data1, Depth = depth_P1)
+irradiance_P2 <- plot.profile(imax = ncol(merge.data2)-19, data = merge.data2, Depth = depth_P2)
+irradiance_P3 <- plot.profile(imax = ncol(merge.data3)-19, data = merge.data3, Depth = depth_P3)
+irradiance_P4 <- plot.profile(imax = ncol(merge.data4)-19, data = merge.data4, Depth = depth_P4)
+irradiance_P5 <- plot.profile(imax = ncol(merge.data5)-19, data = merge.data5, Depth = depth_P5)
+```
+
+## plot linear fitting
+
+```{r}
+linear.fit(depth=depth_P1, irradiance = irradiance_P1)
+linear.fit(depth=depth_P2, irradiance = irradiance_P2)
+linear.fit(depth=depth_P3, irradiance = irradiance_P3)
+linear.fit(depth=depth_P4, irradiance = irradiance_P4)
+linear.fit(depth=depth_P5, irradiance = irradiance_P5)
+```
+
+
+
+## plot nonlinear fitting
+
+```{r}
+nonlinear.fit(depth=depth_P1, irradiance = irradiance_P1)
+nonlinear.fit(depth=depth_P2, irradiance = irradiance_P2)
+nonlinear.fit(depth=depth_P3, irradiance = irradiance_P3)
+nonlinear.fit(depth=depth_P4, irradiance = irradiance_P4)
+nonlinear.fit(depth=depth_P5, irradiance = irradiance_P5)
+```
+
+
+## plot all five light conditions together to compare
+
+```{r}
+par(mfrow=c(3,5))
+plot(depth_P1, irradiance_P1, type="o", xlab = "depth", ylab = "irradiance", col= "red", bty = "l")
+plot(depth_P2, irradiance_P2, type="o", xlab = "depth", ylab = "irradiance", col= "red", bty = "l")
+plot(depth_P3, irradiance_P3, type="o", xlab = "depth", ylab = "irradiance", col= "red", bty = "l")
+plot(depth_P4, irradiance_P4, type="o", xlab = "depth", ylab = "irradiance", col= "red", bty = "l")
+plot(depth_P5, irradiance_P5, type="o", xlab = "depth", ylab = "irradiance", col= "red", bty = "l")
+linear.fit(depth=depth_P1, irradiance = irradiance_P1)
+linear.fit(depth=depth_P2, irradiance = irradiance_P2)
+linear.fit(depth=depth_P3, irradiance = irradiance_P3)
+linear.fit(depth=depth_P4, irradiance = irradiance_P4)
+linear.fit(depth=depth_P5, irradiance = irradiance_P5)
+nonlinear.fit(depth=depth_P1, irradiance = irradiance_P1)
+nonlinear.fit(depth=depth_P2, irradiance = irradiance_P2)
+nonlinear.fit(depth=depth_P3, irradiance = irradiance_P3)
+nonlinear.fit(depth=depth_P4, irradiance = irradiance_P4)
+nonlinear.fit(depth=depth_P5, irradiance = irradiance_P5)
+```
